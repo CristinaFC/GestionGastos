@@ -1,0 +1,11 @@
+/node_modules/
+/dist/
+/config/*
+!/config/config.json
+/.idea
+/.vscode
+.docker
+.env
+docker-compose.yml
+logs
+/package-lock.json
