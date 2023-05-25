@@ -10,10 +10,10 @@ const deleteUserController = require('../Controller/User/DeleteUserController')
 const router = Router()
 
 router.get(
-    '/:id',
+    '/',
     [
         validateJWT,
-        check('id', 'ID not valid').isMongoId(),
+        // check('id', 'ID not valid').isMongoId(),
         validateFields
     ],
     getUserController,
@@ -32,12 +32,12 @@ router.post(
 )
 
 router.put(
-    '/:id',
+    '/',
     [
         validateJWT,
-        check('id', 'ID not valid').isMongoId(),
         check('name').not().isEmpty().isString().escape(),
         check('lastName').not().isEmpty().isString().escape(),
+        check('email').not().isEmpty().isString().escape(),
         validateFields,
 
     ],
@@ -45,10 +45,9 @@ router.put(
 )
 
 router.delete(
-    '/:id',
+    '/',
     [
         validateJWT,
-        check('id', 'ID not valid').isMongoId(),
         validateFields
     ],
     deleteUserController,

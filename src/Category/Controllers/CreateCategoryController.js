@@ -1,5 +1,6 @@
 const createCategory = require('../Services/CreateCategory')
 const catchAsync = require('../../Core/Exceptions/Utils/CatchAsync')
+
 const createCategoryController = async (req, res) =>
 {
     const { name, icon, type } = req.body

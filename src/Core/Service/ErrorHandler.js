@@ -3,17 +3,24 @@ const ForbiddenException = require('../Exceptions/ForbiddenException')
 const mongoErrorHandler = require('./MongoErrorHandler')
 
 const { MongoError } = require('mongodb')
+const InvalidEmailOrPasswordException = require('../Exceptions/InvalidEmailOrPasswordException')
+const AlreadyExistsEntityException = require('../Exceptions/AlreadyExistsEntityException')
 
 const errorHandler = (err, req, res, next) =>
 {
+    // if (err instanceof InvalidEmailOrPasswordException) return build401Response(err, res);
+    if (err instanceof InvalidEmailOrPasswordException) return build401Response(err, res);
     if (err instanceof ForbiddenException) return build403Response(err, res);
     if (err instanceof NotFoundException) return build404Response(err, res);
-
+    // if (err instanceof AlreadyExistsEntityException) return build409Response(err, res);
     if (err instanceof MongoError)
     {
-        const entityAlreadyExistsError = mongoErrorHandler(err);
-        return errorHandler(entityAlreadyExistsError, req, res, next);
+        const specificError = mongoErrorHandler(err)
+        if (specificError instanceof AlreadyExistsEntityException) return build409Response(err, res);
+        return errorHandler(specificError, req, res, next)
     }
+    // if (err instanceof MongoError) return build404Response(err, res);
+
 
     return buildInternalServerErrorResponse(err, res)
 }
@@ -28,6 +35,13 @@ const buildInternalServerErrorResponse = (err, res) =>
 }
 
 /* BUILD 4** ERRORS*/
+const build401Response = (err, res) =>
+{
+    buildFailResponse(res, 401, {
+        status: 401,
+        message: err.message || 'Unauthorized'
+    })
+}
 const build403Response = (err, res) =>
 {
     buildFailResponse(res, 403, {
@@ -40,6 +54,14 @@ const build404Response = (err, res) =>
     buildFailResponse(res, 404, {
         status: 404,
         message: err.message || 'Not found'
+    })
+}
+
+const build409Response = (err, res) =>
+{
+    buildFailResponse(res, 409, {
+        status: 409,
+        message: err.message || 'Entity already exists'
     })
 }
 

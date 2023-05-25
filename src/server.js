@@ -1,14 +1,15 @@
-require('dotenv').config();
+require('dotenv').config()
 
 const authRoutes = require('./Auth/Routes/Auth')
 const userRoutes = require('./Auth/Routes/User')
 const categoriesRoutes = require('./Category/Routes/Category')
+const accountsRoutes = require('./Account/Routes/Account')
 
 const express = require('express');
 const cors = require('cors');
 const errorHandler = require('./Core/Service/ErrorHandler')
 
-const { dbConnection } = require('./Core/Database/config');
+const { dbConnection } = require('./Core/Configuration/databaseConfig');
 
 class Server
 {
@@ -18,7 +19,8 @@ class Server
     constructor()
     {
         this.app = express();
-        this.port = process.env.PORT;
+
+        this.port = process.env.PORT || 3000;
 
         //Conectar a base de datos 
         this.connectDB();
@@ -54,6 +56,7 @@ class Server
         this.app.use('/api/auth', authRoutes)
         this.app.use('/api/users', userRoutes)
         this.app.use('/api/categories', categoriesRoutes)
+        this.app.use('/api/accounts', accountsRoutes)
         //this.app.use('/api/onboarding', onboardingRoutes)
         //this.app.use('/api/companies', companyRoutes)
         //this.app.use('/api/companyUsers', companyUserRoutes)

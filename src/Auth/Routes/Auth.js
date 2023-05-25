@@ -3,6 +3,9 @@ const { Router } = require('express')
 
 const { validateFields } = require('../../Core/Middlewares/ValidateFields')
 const loginController = require('../Controller/Auth/LoginController')
+const logoutController = require('../Controller/Auth/LogoutController')
+
+const validateJWT = require('../Middlewares/ValidateJWT')
 
 
 const router = Router()
@@ -10,11 +13,17 @@ const router = Router()
 router.post(
     '/login',
     [
-        check('email', 'email is required').isEmail().escape(),
+        check('email', 'email is required').isEmail().escape().normalizeEmail(),
         check('password', 'password is required').not().isEmpty(),
         validateFields,
     ],
     loginController,
+)
+
+router.get(
+    '/logout',
+    validateJWT,
+    logoutController,
 )
 
 // router.post(

@@ -3,7 +3,7 @@ const catchAsync = require('../../Core/Exceptions/Utils/CatchAsync')
 
 const updateCategoryController = async (req, res) =>
 {
-    const { user, body } = req
+    const { body } = req
     const { id } = req.params
 
     const category = await updateCategory(id, body)

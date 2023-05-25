@@ -4,7 +4,7 @@ const deleteUser = require("../../Service/User/DeleteUser");
 
 const deleteUserController = async (req, res) =>
 {
-    const { id } = req.params;
+    const id = req.user;
 
     const user = await deleteUser(id)
     res.status(200).json({
