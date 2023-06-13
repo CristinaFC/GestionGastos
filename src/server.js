@@ -4,6 +4,7 @@ const authRoutes = require('./Auth/Routes/Auth')
 const userRoutes = require('./Auth/Routes/User')
 const categoriesRoutes = require('./Category/Routes/Category')
 const accountsRoutes = require('./Account/Routes/Account')
+const expensesRoutes = require('./Expense/Routes/Expense')
 
 const express = require('express');
 const cors = require('cors');
@@ -57,11 +58,7 @@ class Server
         this.app.use('/api/users', userRoutes)
         this.app.use('/api/categories', categoriesRoutes)
         this.app.use('/api/accounts', accountsRoutes)
-        //this.app.use('/api/onboarding', onboardingRoutes)
-        //this.app.use('/api/companies', companyRoutes)
-        //this.app.use('/api/companyUsers', companyUserRoutes)
-        //this.app.use('/api/employeeUsers', employeeUserRoutes)
-        //this.app.use('/api/advances', advanceRoutes)
+        this.app.use('/api/expenses', expensesRoutes)
     }
 
     listen()
