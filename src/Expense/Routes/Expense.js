@@ -45,7 +45,7 @@ router.post(
         check('account').not().isEmpty().isMongoId().escape(),
         check('category').not().isEmpty().isMongoId().escape(),
         check('description').not().isEmpty().isString().escape(),
-        check('description').not().isEmpty().isBoolean().escape(),
+        check('fixed').not().isEmpty().isBoolean().escape(),
         check('group').optional().isMongoId(),
         validateFields,
     ],
