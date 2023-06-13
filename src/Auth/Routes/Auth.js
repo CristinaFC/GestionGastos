@@ -13,7 +13,7 @@ const router = Router()
 router.post(
     '/login',
     [
-        check('email', 'email is required').isEmail().escape().normalizeEmail(),
+        check('email', 'email is required').trim().isEmail().not().isEmpty().escape(),
         check('password', 'password is required').not().isEmpty(),
         validateFields,
     ],

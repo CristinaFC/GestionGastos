@@ -1,4 +1,5 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model } = require('mongoose');
+const Expense = require('../../Expense/Model/Expense');
 
 const AccountSchema = new Schema({
     name: {

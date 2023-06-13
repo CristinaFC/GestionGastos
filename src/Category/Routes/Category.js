@@ -1,4 +1,4 @@
-const { check } = require('express-validator')
+const { check, query } = require('express-validator')
 const { Router } = require('express')
 const { validateFields } = require('../../Core/Middlewares/ValidateFields')
 const validateJWT = require('../../Auth/Middlewares/ValidateJWT')
@@ -12,7 +12,7 @@ const hasPermission = require('../Middlewares/HasPermission')
 
 const router = Router()
 
-router.get('/', validateJWT, getCategoriesByUserController)
+router.get('/', [validateJWT, query('type').optional()], getCategoriesByUserController)
 
 router.get(
     '/:id',
