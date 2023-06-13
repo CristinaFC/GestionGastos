@@ -29,12 +29,12 @@ const IncomeSchema = new Schema({
 })
 
 
-// IncomeSchema.methods.toJSON = function ()
-// {
-//     const { __v, password, _id, ...user } = this.toObject();
-//     user.uid = _id;
-//     return user;
+IncomeSchema.methods.toJSON = function ()
+{
+    const { __v, _id, ...income } = this.toObject();
+    income.uid = _id;
+    return income;
 
-// }
+}
 
 module.exports = model('Income', IncomeSchema)
