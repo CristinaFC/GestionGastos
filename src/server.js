@@ -5,6 +5,7 @@ const userRoutes = require('./Auth/Routes/User')
 const categoriesRoutes = require('./Category/Routes/Category')
 const accountsRoutes = require('./Account/Routes/Account')
 const expensesRoutes = require('./Expense/Routes/Expense')
+const incomesRoutes = require('./Income/Routes/Income')
 
 const express = require('express');
 const cors = require('cors');
@@ -59,6 +60,7 @@ class Server
         this.app.use('/api/categories', categoriesRoutes)
         this.app.use('/api/accounts', accountsRoutes)
         this.app.use('/api/expenses', expensesRoutes)
+        this.app.use('/api/incomes', incomesRoutes)
     }
 
     listen()

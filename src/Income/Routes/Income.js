@@ -41,11 +41,11 @@ router.post(
     [
         validateJWT,
         check('date').not().isEmpty().isDate().escape(),
-        check('amount').not().isEmpty().isNumeric().escape(),
+        check('amount').not().isEmpty().isFloat({ gt: 0.0 }).escape(),
         check('account').not().isEmpty().isMongoId().escape(),
         check('category').not().isEmpty().isMongoId().escape(),
-        check('description').not().isEmpty().isString().escape(),
-
+        check('description').optional().isString().escape(),
+        check('fixed').not().isEmpty().isBoolean().escape(),
         validateFields,
     ],
     createIncomeController,
@@ -58,12 +58,12 @@ router.put(
         hasPermission,
         check('id', 'ID not valid').isMongoId(),
         check('date').not().isEmpty().isDate().escape(),
-        check('amount').not().isEmpty().isNumeric().escape(),
+        check('amount').not().isEmpty().isFloat({ gt: 0.0 }).escape(),
         check('account').not().isEmpty().isMongoId().escape(),
         check('category').not().isEmpty().isMongoId().escape(),
-        check('description').not().isEmpty().isString().escape(),
+        check('description').optional().isString().escape(),
+        check('fixed').not().isEmpty().isBoolean().escape(),
         validateFields,
-
     ],
     updateIncomeController,
 )

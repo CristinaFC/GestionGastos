@@ -6,6 +6,7 @@ const loginController = require('../Controller/Auth/LoginController')
 const logoutController = require('../Controller/Auth/LogoutController')
 
 const validateJWT = require('../Middlewares/ValidateJWT')
+const refreshJWTController = require('../Controller/Auth/RefreshJWTController')
 
 
 const router = Router()
@@ -26,11 +27,11 @@ router.get(
     logoutController,
 )
 
-// router.post(
-//     '/refresh',
-//     [check('refreshToken', 'refreshToken is required').isJWT(), validateFields],
-//     refreshTokenController,
-// )
+router.post(
+    '/refresh',
+    [check('refreshToken', 'refreshToken is required').isJWT(), validateFields],
+    refreshJWTController,
+)
 
 // router.post(
 //     '/password/request',

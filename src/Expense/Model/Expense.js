@@ -25,7 +25,9 @@ const ExpenseSchema = new Schema(
             required: true,
         },
         description: {
-            type: String
+            type: String,
+            required: false,
+            default: '',
         },
         group: {
             type: Schema.Types.ObjectId,
@@ -36,7 +38,6 @@ const ExpenseSchema = new Schema(
             type: Boolean,
             default: false
         }
-
     },
     {
         timestamp: true

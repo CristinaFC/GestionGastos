@@ -20,7 +20,8 @@ router.get('/',
         query('recents').optional(),
         query('limit').optional(),
         query('sort').optional(),
-        query('type').optional()
+        query('type').optional(),
+        query('category').optional().isMongoId()
     ],
     getExpensesByUserController)
 
@@ -41,10 +42,10 @@ router.post(
     [
         validateJWT,
         check('date').not().isEmpty().isDate().escape(),
-        check('amount').not().isEmpty().isNumeric().escape(),
+        check('amount').not().isEmpty().isFloat({ gt: 0.0 }).escape(),
         check('account').not().isEmpty().isMongoId().escape(),
         check('category').not().isEmpty().isMongoId().escape(),
-        check('description').not().isEmpty().isString().escape(),
+        check('description').optional().isString().escape(),
         check('fixed').not().isEmpty().isBoolean().escape(),
         check('group').optional().isMongoId(),
         validateFields,
@@ -59,10 +60,11 @@ router.put(
         hasPermission,
         check('id', 'ID not valid').isMongoId(),
         check('date').not().isEmpty().isDate().escape(),
-        check('amount').not().isEmpty().isNumeric().escape(),
+        check('amount').not().isEmpty().isFloat({ gt: 0.0 }).escape(),
         check('account').not().isEmpty().isMongoId().escape(),
         check('category').not().isEmpty().isMongoId().escape(),
-        check('description').not().isEmpty().isString().escape(),
+        check('description').optional().isString().escape(),
+        check('fixed').not().isEmpty().isBoolean().escape(),
         check('group').optional().isMongoId(),
         validateFields,
 

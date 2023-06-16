@@ -12,7 +12,12 @@ const hasPermission = require('../Middlewares/HasPermission')
 
 const router = Router()
 
-router.get('/', [validateJWT, query('type').optional()], getCategoriesByUserController)
+router.get('/',
+    [
+        validateJWT,
+        query('type').optional(),
+    ],
+    getCategoriesByUserController)
 
 router.get(
     '/:id',

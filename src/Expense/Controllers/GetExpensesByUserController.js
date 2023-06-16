@@ -6,14 +6,13 @@ const { getRecentExpenses } = require('../Services/GetRecentExpenses')
 const getExpensesByUserController = async (req, res) =>
 {
     const userId = req.user.id
-
-    const { recents, limit, sort, type } = req.query
+    const { recents, limit, category } = req.query
 
     let expenses;
     if (recents)
         expenses = await getRecentExpenses(userId, limit)
     else
-        expenses = await getExpensesByUser(userId, sort, type)
+        expenses = await getExpensesByUser(userId, category)
 
     res.status(200).json({
         status: "SUCCESS",

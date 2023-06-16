@@ -8,19 +8,17 @@ const AlreadyExistsEntityException = require('../Exceptions/AlreadyExistsEntityE
 
 const errorHandler = (err, req, res, next) =>
 {
-    // if (err instanceof InvalidEmailOrPasswordException) return build401Response(err, res);
+
     if (err instanceof InvalidEmailOrPasswordException) return build401Response(err, res);
+
     if (err instanceof ForbiddenException) return build403Response(err, res);
     if (err instanceof NotFoundException) return build404Response(err, res);
-    // if (err instanceof AlreadyExistsEntityException) return build409Response(err, res);
     if (err instanceof MongoError)
     {
         const specificError = mongoErrorHandler(err)
         if (specificError instanceof AlreadyExistsEntityException) return build409Response(err, res);
         return errorHandler(specificError, req, res, next)
     }
-    // if (err instanceof MongoError) return build404Response(err, res);
-
 
     return buildInternalServerErrorResponse(err, res)
 }
