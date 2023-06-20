@@ -3,10 +3,9 @@ const createUser = require('../../Service/User/CreateUser')
 
 const createUserController = async (req, res) =>
 {
-    const { name, lastName, email, password } = req.body
+    const { name, lastName, email, password, role } = req.body
 
-
-    const user = await createUser(name, lastName, email, password)
+    const user = await createUser(name, lastName, email, password, role)
     res.status(200).json({
         status: "SUCCESS",
         data: { user },

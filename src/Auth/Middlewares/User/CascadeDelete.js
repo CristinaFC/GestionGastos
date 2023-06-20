@@ -1,4 +1,3 @@
-const Category = require("../../../Category/Model/Category")
 const NotFoundException = require("../../../Core/Exceptions/NotFoundException")
 const catchAsync = require("../../../Core/Exceptions/Utils/CatchAsync")
 
@@ -9,7 +8,7 @@ const cascadeDelete = async (Model, userId) =>
 
     if (!documents) throw new NotFoundException('Not found')
 
-    Array.from(documents).forEach(async (doc) => await Category.deleteOne(doc))
+    Array.from(documents).forEach(async (doc) => await Model.deleteOne(doc))
 
     return
 
