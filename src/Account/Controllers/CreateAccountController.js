@@ -3,10 +3,10 @@ const createAccount = require('../Services/CreateAccount')
 
 const createAccountController = async (req, res) =>
 {
-    const { name, initAmount, date, icon, isSalary } = req.body
+    const { name, icon, isBalance } = req.body
     const user = req.user
 
-    const account = await createAccount(name, initAmount, date, user, icon, isSalary)
+    const account = await createAccount(name, user, icon, isBalance)
 
     res.status(200).json({
         status: "SUCCESS",

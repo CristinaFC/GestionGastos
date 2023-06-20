@@ -6,32 +6,42 @@ const AccountSchema = new Schema({
         type: String,
         required: true
     },
-    initAmount: {
-        type: Number,
-        required: true,
-    },
     totalAmount: {
+        type: Number,
+        default: 0,
+    },
+    totalExpenses: {
         type: Number,
         default: 0
     },
-    date: {
-        type: Date,
-        required: true,
-        default: () => Date.now() + 7 * 24 * 60 * 60 * 1000
+    totalIncomes: {
+        type: Number,
+        default: 0
     },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
+    isBalance: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+    balance: {
+        type: Schema.Types.ObjectId,
+        ref: 'Balance',
+        default: null
+    },
     icon: {
         type: String,
         required: true
     },
-    isSalary: {
-        type: Boolean,
-        required: true
-    }
+    // date: {
+    //     type: Date,
+    //     required: true,
+    //     default: () => Date.now() + 7 * 24 * 60 * 60 * 1000
+    // },
 
 })
 

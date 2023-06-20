@@ -40,7 +40,7 @@ const ExpenseSchema = new Schema(
         }
     },
     {
-        timestamp: true
+        timestamps: true
     }
 )
 

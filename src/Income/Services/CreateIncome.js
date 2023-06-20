@@ -15,7 +15,7 @@ const createIncome = async (props) =>
     if (categoryFound.type !== "Incomes")
         throw new ForbiddenException(`Forbidden - Category type needs to be "Incomes" `)
 
-    if (categoryFound.user.toString() !== user.id)
+    if (categoryFound.user.toString() !== user.id && categoryFound.readOnly === false)
         throw new ForbiddenException(`Forbidden`)
 
     const accountFound = await Account.findById(account)
@@ -30,6 +30,13 @@ const createIncome = async (props) =>
 
     const income = new Income({ date, amount, account, category, description, user })
     await income.save()
+
+    accountFound.totalAmount += parseFloat(amount)
+    accountFound.totalIncomes += parseFloat(amount)
+    await accountFound.save()
+    // const totalIncomes = parseFloat(accountFound.totalIncomes) + parseFloat(amount)
+    // const totalAmount = totalIncomes - accountFound.totalExpenses
+    // await Account.findByIdAndUpdate(account, { totalIncomes, totalAmount })
     return income
 }
 
