@@ -18,6 +18,10 @@ const CategorySchema = new Schema({
         default: 'Expense',
         required: true
     },
+    readOnly: {
+        type: Boolean,
+        default: false
+    }
 
 })
 

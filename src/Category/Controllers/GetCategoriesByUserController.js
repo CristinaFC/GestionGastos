@@ -8,10 +8,9 @@ const getCategoriesByUserController = async (req, res) =>
     const { type } = req.query
 
     let categories;
-    if (type)
-        categories = await getCategoriesByUserAndType(userId, type)
-    else
-        categories = await getCategoriesByUser(userId)
+    if (type) categories = await getCategoriesByUserAndType(userId, type)
+    else categories = await getCategoriesByUser(userId)
+
     res.status(200).json({
         status: "SUCCESS",
         data: { categories },
