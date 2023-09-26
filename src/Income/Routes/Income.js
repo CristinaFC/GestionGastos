@@ -19,8 +19,8 @@ router.get('/',
         validateJWT,
         query('recents').optional(),
         query('limit').optional(),
-        query('sort').optional(),
-        query('type').optional()
+
+        query('account').optional().isMongoId(),
     ],
     getIncomesByUserController)
 

@@ -7,13 +7,13 @@ const getIncomesByUserController = async (req, res) =>
 {
     const userId = req.user.id
 
-    const { recents, limit, sort, type } = req.query
+    const { recents, limit, account } = req.query
 
     let incomes;
     if (recents)
         incomes = await getRecentIncomes(userId, limit)
     else
-        incomes = await getIncomesByUser(userId, sort, type)
+        incomes = await getIncomesByUser(userId, account)
 
     res.status(200).json({
         status: "SUCCESS",

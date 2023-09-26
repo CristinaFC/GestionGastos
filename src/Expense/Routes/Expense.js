@@ -19,9 +19,9 @@ router.get('/',
         validateJWT,
         query('recents').optional(),
         query('limit').optional(),
-        query('sort').optional(),
-        query('type').optional(),
-        query('category').optional().isMongoId()
+        query('category').optional().isMongoId(),
+        query('account').optional().isMongoId(),
+
     ],
     getExpensesByUserController)
 
