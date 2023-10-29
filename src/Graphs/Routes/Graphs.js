@@ -11,6 +11,12 @@ const router = Router()
 router.get('/incomes',
     [
         validateJWT,
+        query("account").optional().isBoolean(),
+        query('month'),
+        query('year'),
+        query('monthTwo'),
+        query('yearTwo'),
+        query('category'),
         query("account").optional().isBoolean()
     ],
     getIncomesController
@@ -19,7 +25,13 @@ router.get('/incomes',
 router.get('/expenses',
     [
         validateJWT,
-        query("account").optional().isBoolean()
+        query("account").optional().isBoolean(),
+        query('month'),
+        query('year'),
+        query('monthTwo'),
+        query('yearTwo'),
+        query('category'),
+
     ],
     getExpensesController
 )

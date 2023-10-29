@@ -1,18 +1,25 @@
 const catchAsync = require('../../Core/Exceptions/Utils/CatchAsync')
-const { getExpensesByCategoriesAndDate } = require('../Services/GetExpensesByCategoriesAndDate')
+const { getExpensesByAccount } = require('../Services/Expenses/GetExpensesByAccount')
+const { getExpensesByCategoriesAndDate } = require('../Services/Expenses/GetExpensesByCategoriesAndDate')
+const { getExpensesByDatesComparation } = require('../Services/Expenses/GetExpensesByDatesComparation')
+const { getExpensesByYear } = require('../Services/Expenses/GetExpensesByYear')
+
 
 const getExpensesController = async (req, res) =>
 {
-    // const { account } = req.query
     const { user } = req
-
+    const { month, year, category, account, monthTwo, yearTwo } = req.query
     let expenses;
 
-    // if (account)
-    //     expenses = await get(user)
+    if ('month' in req.query && 'monthTwo' in req.query && 'year' in req.query && 'yearTwo' in req.query)
+        expenses = await getExpensesByDatesComparation(user, month, monthTwo, year, yearTwo)
+    else if ('account' in req.query)
+        expenses = await getExpensesByAccount(user, month, year, account)
+    else if ('month' in req.query && 'year' in req.query)
+        expenses = await getExpensesByCategoriesAndDate(user, month, year)
+    else
+        expenses = await getExpensesByYear(user, year, category)
 
-    // else 
-    expenses = await getExpensesByCategoriesAndDate(user)
 
     res.status(200).json({
         status: "SUCCESS",

@@ -8,8 +8,7 @@ const getBalanceByUser = async (id) =>
 
     const user = await User.findById(id)
 
-    if (!user)
-        throw new NotFoundException(`User with id ${id} not found`)
+    if (!user) throw new NotFoundException(`User with id ${id} not found`)
 
     const balance = await Balance.find({ user: id })
 

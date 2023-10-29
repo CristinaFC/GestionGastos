@@ -1,9 +1,9 @@
-const NotFoundException = require('../../Core/Exceptions/NotFoundException');
-const Expense = require('../../Expense/Model/Expense');
+const NotFoundException = require('../../../Core/Exceptions/NotFoundException');
+const Expense = require('../../../Expense/Model/Expense');
 
 const { ObjectId } = require('mongodb');
 
-const getExpensesByCategoriesAndDate = async (user) =>
+const getExpensesByCategoriesAndDate = async (user, month, year) =>
 {
 
     const expenses = await Expense.aggregate([
@@ -11,7 +11,10 @@ const getExpensesByCategoriesAndDate = async (user) =>
             $match: {
                 user: new ObjectId(user),
                 $expr: {
-                    $eq: [{ $month: '$date' }, 6] // Filtrar por el mes de junio (valor 6)
+                    $and: [
+                        { $eq: [{ $year: '$date' }, parseInt(year)] },
+                        { $eq: [{ $month: '$date' }, parseInt(month)] }
+                    ]
                 }
             }
         },
@@ -23,6 +26,7 @@ const getExpensesByCategoriesAndDate = async (user) =>
                 as: 'categoryData'
             }
         },
+
         {
             $group: {
                 _id: {
@@ -38,21 +42,10 @@ const getExpensesByCategoriesAndDate = async (user) =>
             }
         },
         {
-            $group: {
-                _id: '$_id.date',
-                gastos: {
-                    $push: {
-                        label: '$_id.category',
-                        value: '$total'
-                    }
-                }
-            }
-        },
-        {
             $project: {
                 _id: 0,
-                date: '$_id',
-                gastos: 1
+                category: "$_id.category",
+                total: 1
             }
         }
     ])
