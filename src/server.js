@@ -14,6 +14,10 @@ const cors = require('cors');
 const errorHandler = require('./Core/Service/ErrorHandler')
 
 const { dbConnection } = require('./Core/Configuration/databaseConfig');
+const schedule = require('node-schedule');
+const { getFixedExpenses } = require('./Expense/Services/GetFixedExpenses')
+const createExpense = require('./Expense/Services/CreateExpense')
+const Expense = require('./Expense/Model/Expense')
 
 class Server
 {
@@ -37,6 +41,33 @@ class Server
 
         //Control de errores personalizado
         this.app.use(errorHandler)
+
+        const job = schedule.scheduleJob('0 0 * * *', async function (fireDate)
+        {
+            const expenses = await getFixedExpenses();
+            expenses.forEach(async (exp) =>
+            {
+
+                const actual = new Date()
+                let { amount, user, account, category, description, group, date } = exp
+
+                if (actual.getMonth() > date.getMonth()
+                    && actual.getFullYear() > date.getFullYear()
+                    && actual.getDate() == date.getDate())
+                {
+                    const expense = new Expense({
+                        amount,
+                        user,
+                        account,
+                        category,
+                        description,
+                        fixed: false,
+                        date: new Date(), group
+                    })
+                    await expense.save()
+                }
+            })
+        });
     }
 
     async connectDB()
@@ -53,6 +84,12 @@ class Server
 
         this.app.use(express.static('public'));
 
+    }
+
+    async scheduleTasks()
+    {
+        const expenses = await getFixedExpenses();
+        console.log(expenses);
     }
 
     routes()
