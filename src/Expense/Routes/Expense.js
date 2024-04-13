@@ -8,7 +8,7 @@ const hasPermission = require('../Middlewares/HasPermission')
 const {
     createExpenseController,
     getExpenseByIdController,
-    getExpensesByUserController,
+    getExpensesController,
     updateExpenseController,
     deleteExpenseController
 } = require('../Controllers')
@@ -19,11 +19,13 @@ router.get('/',
         validateJWT,
         query('recents').optional(),
         query('limit').optional(),
-        query('category').optional().isMongoId(),
-        query('account').optional().isMongoId(),
-
+        query('month').optional(),
+        query('year').optional(),
+        query('category').isMongoId(),
+        query('account').isMongoId(),
+        query('recipient').optional().isMongoId(),
     ],
-    getExpensesByUserController)
+    getExpensesController)
 
 
 router.get(
@@ -46,8 +48,6 @@ router.post(
         check('account').not().isEmpty().isMongoId().escape(),
         check('category').not().isEmpty().isMongoId().escape(),
         check('description').optional().isString().escape(),
-        check('fixed').not().isEmpty().isBoolean().escape(),
-        check('group').optional().isMongoId(),
         validateFields,
     ],
     createExpenseController,
@@ -64,8 +64,6 @@ router.put(
         check('account').not().isEmpty().isMongoId().escape(),
         check('category').not().isEmpty().isMongoId().escape(),
         check('description').optional().isString().escape(),
-        check('fixed').not().isEmpty().isBoolean().escape(),
-        check('group').optional().isMongoId(),
         validateFields,
 
     ],
