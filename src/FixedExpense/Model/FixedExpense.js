@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose')
 
-const ExpenseSchema = new Schema(
+const FixedExpenseSchema = new Schema(
     {
-        date: {
+        initDate: {
             type: Date,
             required: true,
         },
@@ -29,17 +29,36 @@ const ExpenseSchema = new Schema(
             required: true,
             default: '',
         },
-        fixedExpenseRef: {
-            type: Schema.Types.ObjectId,
-            ref: 'FixedExpense',
+        period: {
+            type: Number,
+            required: true,
+            default: 2
+        },
+        lastInsertion: {
+            type: Date,
             default: null
+        },
+        nextInsertion: {
+            type: Date,
+            default: null
+        },
+        hasEndDate: {
+            type: Boolean,
+            default: false,
+        },
+        endDate: {
+            type: Date,
+            default: null
+        },
+        status: {
+            type: Nunmber,
+            default: 1,
         },
         recipient: {
             type: Schema.Types.ObjectId,
             ref: 'Recipient',
             default: null
         }
-
     },
     {
         timestamps: true
@@ -47,12 +66,12 @@ const ExpenseSchema = new Schema(
 )
 
 
-ExpenseSchema.methods.toJSON = function ()
+FixedExpenseSchema.methods.toJSON = function ()
 {
-    const { __v, _id, ...expense } = this.toObject();
-    expense.uid = _id;
-    return expense;
+    const { __v, _id, ...fixedExpense } = this.toObject();
+    fixedExpense.uid = _id;
+    return fixedExpense;
 
 }
 
-module.exports = model('Expense', ExpenseSchema)
+module.exports = model('FixedExpense', FixedExpenseSchema)
