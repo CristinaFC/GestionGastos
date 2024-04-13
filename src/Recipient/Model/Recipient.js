@@ -1,35 +1,22 @@
 const { Schema, model } = require('mongoose')
 
-const RecipientInfoSchema = new Schema({
-    type: {
-        type: Number,
-        required: true,
-    },
-    value: {
-        type: String,
-        required: true,
-    },
-    recipient: {
-        type: Schema.Types.ObjectId,
-        ref: 'Recipient',
-        required: true,
-    },
-});
-
-RecipientInfoSchema.methods.toJSON = function ()
-{
-    const { __v, _id, ...recipient } = this.toObject();
-    recipient.uid = _id;
-    return recipient;
-
-}
-
 const RecipientSchema = new Schema({
     name: {
         type: String,
         required: true,
     },
-    recipientInfo: [RecipientInfoSchema],
+    recipientInfo:
+        [{
+            type: {
+                type: Number,
+                required: true,
+            },
+            value: {
+                type: String,
+                required: true,
+            }
+        }],
+
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -45,9 +32,6 @@ RecipientSchema.methods.toJSON = function ()
 
 }
 
-module.exports = {
-    Recipient: model('Recipient', RecipientSchema),
-    RecipientInfo: model('RecipientInfo', RecipientInfoSchema),
-};
+module.exports = model('Recipient', RecipientSchema)
 
 
