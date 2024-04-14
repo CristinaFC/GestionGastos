@@ -7,10 +7,13 @@ const Category = require('../../Category/Model/Category');
 const Account = require('../../Account/Model/Account');
 const updateAccountAmounts = require('../../Account/Services/UpdateAccountAmounts');
 
-const createExpense = async (props) =>
+const createExpense = async (user, props) =>
 {
-    const { date, amount, account, category, description, group, user, fixed } = props
     const userExists = await User.findById(user)
+
+    if (!userExists) throw new NotFoundException(`User with id ${user} not found`)
+
+    let { date, amount, account, category, concept, recipient, fixedExpenseRef } = props
 
     const categoryFound = await Category.findById(category)
     if (categoryFound.type !== "Expenses")
@@ -26,20 +29,15 @@ const createExpense = async (props) =>
     if (accountFound.user.toString() !== user.id)
         throw new ForbiddenException(`Forbidden`)
 
-    if (!userExists)
-        throw new NotFoundException(`User with id ${user} not found`)
 
-    const expense = new Expense({ date, amount, account, category, description, group, user })
+    const expense = new Expense({
+        date, amount, account, category, user,
+        concept, recipient, fixedExpenseRef
+    })
+
     await expense.save()
 
-    // const totalExpenses = parseFloat(accountFound.totalExpenses) + parseFloat(amount)
-    // const totalAmount = accountFound.totalIncomes - totalExpenses
-    // await Account.findByIdAndUpdate(account, { totalExpenses, totalAmount })
-
     await updateAccountAmounts(account, user)
-    // accountFound.totalExpenses += parseFloat(amount)
-    // accountFound.totalAmount -= parseFloat(amount)
-    // await accountFound.save()
 
     return expense
 }

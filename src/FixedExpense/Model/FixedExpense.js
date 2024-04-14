@@ -51,7 +51,7 @@ const FixedExpenseSchema = new Schema(
             default: null
         },
         status: {
-            type: Nunmber,
+            type: Number,
             default: 1,
         },
         recipient: {

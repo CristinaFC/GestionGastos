@@ -9,7 +9,7 @@ const RecipientSchema = new Schema({
         [{
             type: {
                 type: Number,
-                required: true,
+                required: false,
             },
             value: {
                 type: String,
