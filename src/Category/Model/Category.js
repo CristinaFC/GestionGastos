@@ -18,6 +18,16 @@ const CategorySchema = new Schema({
         default: 'Expense',
         required: true
     },
+    limit: {
+        type: Number,
+        default: 0,
+        required: false
+    },
+    monthlyExpenses: [{
+        month: Number,
+        year: Number,
+        total: Number
+    }],
     readOnly: {
         type: Boolean,
         default: false

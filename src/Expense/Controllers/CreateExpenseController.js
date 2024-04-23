@@ -5,11 +5,11 @@ const createExpenseController = async (req, res) =>
 {
     const user = req.user
 
-    const expense = await createExpense(user, req.body)
-
+    const { expense, limitInfo } = await createExpense(user, req.body)
     res.status(200).json({
         status: "SUCCESS",
         data: { expense },
+        limitInfo
     })
 }
 

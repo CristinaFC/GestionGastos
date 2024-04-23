@@ -56,20 +56,20 @@ router.post(
 )
 
 
-
 router.put(
     '/:id',
     [
         validateJWT,
         hasPermission,
-        check('date').not().isEmpty().isDate().escape(),
-        check('amount').not().isEmpty().isFloat({ gt: 0.0 }).escape(),
-        check('account').not().isEmpty().isMongoId().escape(),
-        check('category').not().isEmpty().isMongoId().escape(),
+        check('initDate').optional().isDate().escape(),
+        check('amount').optional().isFloat({ gt: 0.0 }).escape(),
+        check('account').optional().isMongoId().escape(),
+        check('category').optional().isMongoId().escape(),
         check('description').optional().isString().escape(),
-        check('period').not().isEmpty().isNumeric().escape(),
-        check('hasEndDate').not().isEmpty().isBoolean().escape(),
-        check('endDate').optional().isDate().escape(),
+        check('period').optional().isNumeric().escape(),
+        check('hasEndDate').optional().isBoolean().escape(),
+        check('endDate').optional().optional().isDate().escape(),
+        check('status').optional().isNumeric(),
         validateFields,
 
     ],
