@@ -35,8 +35,13 @@ const AccountSchema = new Schema({
     },
     icon: {
         type: String,
-        required: true
+        required: false
     },
+    initAmountRef: {
+        type: Schema.Types.ObjectId,
+        ref: 'Income',
+        required: false
+    }
     // date: {
     //     type: Date,
     //     required: true,

@@ -28,9 +28,9 @@ router.post(
     [
         validateJWT,
         check('name').not().isEmpty().isString().escape(),
-        // check('initAmount').not().isEmpty().isNumeric().escape(),
-        // check('isSalary').not().isEmpty().isBoolean().escape(),
-        check('icon').not().isEmpty().isString().escape(),
+        check('initAmount').not().isEmpty().isNumeric().escape(),
+        check('isBalance').not().isEmpty().isBoolean().escape(),
+        check('icon').optional().isString().escape(),
         // check('date').not().isEmpty().isDate(),
         validateFields,
     ],
