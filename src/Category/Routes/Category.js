@@ -37,7 +37,7 @@ router.post(
         check('name').not().isEmpty().isString().escape(),
         check('icon').not().isEmpty().isString().escape(),
         check('type').not().isEmpty().isString(),
-        check('limit').isNumeric(),
+        check('limit').optional().isNumeric(),
         validateFields,
     ],
     createCategoryController,
