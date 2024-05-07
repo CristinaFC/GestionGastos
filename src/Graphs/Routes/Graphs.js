@@ -4,6 +4,7 @@ const { validateFields } = require('../../Core/Middlewares/ValidateFields')
 const validateJWT = require('../../Auth/Middlewares/ValidateJWT')
 const getIncomesController = require('../Controllers/GetIncomesController')
 const getExpensesController = require('../Controllers/GetExpensesController')
+const getGraphsController = require('../Controllers/GetGraphsController')
 
 
 const router = Router()
@@ -34,6 +35,13 @@ router.get('/expenses',
 
     ],
     getExpensesController
+)
+
+router.get('/overview',
+    [
+        validateJWT,
+    ],
+    getGraphsController
 )
 
 

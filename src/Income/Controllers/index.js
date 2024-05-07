@@ -1,7 +1,7 @@
 const createIncomeController = require('./CreateIncomeController');
 const deleteIncomeController = require('./DeleteIncomeController');
 const getIncomeByIdController = require('./GetIncomeByIdController');
-const getIncomesByUserController = require('./GetIncomesByUserController');
+const getIncomesController = require('./GetIncomesController');
 const updateIncomeController = require('./UpdateIncomecontroller');
 
 
@@ -9,6 +9,6 @@ module.exports = {
     createIncomeController,
     deleteIncomeController,
     getIncomeByIdController,
-    getIncomesByUserController,
+    getIncomesByUserController: getIncomesController,
     updateIncomeController,
 }

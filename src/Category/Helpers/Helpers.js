@@ -36,7 +36,7 @@ const updateCategoryAmount = async (date, category, amount) =>
 
 const isLimitReached = (amount, limit) =>
 {
-    return amount > limit
+    return limit > 0 && amount > limit;
 }
 
 module.exports = { updateCategoryAmount }

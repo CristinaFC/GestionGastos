@@ -1,8 +1,9 @@
 const catchAsync = require('../../Core/Exceptions/Utils/CatchAsync')
-const { getExpensesByAccount } = require('../Services/Expenses/GetExpensesByAccount')
-const { getExpensesByCategoriesAndDate } = require('../Services/Expenses/GetExpensesByCategoriesAndDate')
-const { getExpensesByDatesComparation } = require('../Services/Expenses/GetExpensesByDatesComparation')
-const { getExpensesByYear } = require('../Services/Expenses/GetExpensesByYear')
+const { getTransactionsByAccountPerMonth } = require('../Services/GetTransactionsByAccountPerMonth')
+const { getTransactionsByAccountPerYear } = require('../Services/GetTransactionsByAccountPerYear')
+const { getTransactionsByCategoriesAndDate } = require('../Services/GetTransactionsByCategoriesAndDate')
+const { getTransactionsByDatesComparation } = require('../Services/GetTransactionsByDatesComparation')
+const { getTransactionsByYear } = require('../Services/GetTransactionsByYear')
 
 
 const getExpensesController = async (req, res) =>
@@ -12,13 +13,14 @@ const getExpensesController = async (req, res) =>
     let expenses;
 
     if ('month' in req.query && 'monthTwo' in req.query && 'year' in req.query && 'yearTwo' in req.query)
-        expenses = await getExpensesByDatesComparation(user, month, monthTwo, year, yearTwo)
-    else if ('account' in req.query)
-        expenses = await getExpensesByAccount(user, month, year, account)
+        expenses = await getTransactionsByDatesComparation(user, month, monthTwo, year, yearTwo, "Expense")
+    else if ('account' in req.query && 'year' in req.query)
+        expenses = await getTransactionsByAccountPerYear(user, year, account, "Expense")
     else if ('month' in req.query && 'year' in req.query)
-        expenses = await getExpensesByCategoriesAndDate(user, month, year)
-    else
-        expenses = await getExpensesByYear(user, year, category)
+        expenses = await getTransactionsByCategoriesAndDate(user, month, year, "Expense")
+    else if ('account' in req.query && 'month' in req.query && 'year' in req.query)
+        expenses = await getTransactionsByAccountPerMonth(user, month, year, account, "Expense")
+    else expenses = await getTransactionsByYear(user, year, category, "Expense")
 
 
     res.status(200).json({

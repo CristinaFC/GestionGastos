@@ -3,11 +3,9 @@ const createIncome = require('../Services/CreateIncome')
 
 const createIncomeController = async (req, res) =>
 {
-    const { date, amount, account, category, description } = req.body
     const user = req.user
 
-
-    const income = await createIncome({ date, amount, account, category, description, user })
+    const income = await createIncome(user, req.body)
 
     res.status(200).json({
         status: "SUCCESS",

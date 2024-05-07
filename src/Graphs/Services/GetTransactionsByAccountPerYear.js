@@ -1,19 +1,19 @@
-const NotFoundException = require('../../../Core/Exceptions/NotFoundException');
-const Expense = require('../../../Expense/Model/Expense');
-
+const NotFoundException = require('../../Core/Exceptions/NotFoundException');
+const Expense = require('../../Expense/Model/Expense');
+const Income = require('../../Income/Model/Income');
 const { ObjectId } = require('mongodb');
 
-const getExpensesByAccount = async (user, month, year, account) =>
+const getTransactionsByAccountPerYear = async (user, year, account, model) =>
 {
+    const Model = model === "Expense" ? Expense : Income
 
-    const expenses = await Expense.aggregate([
+    const data = await Model.aggregate([
         {
             $match: {
                 user: new ObjectId(user),
                 $expr: {
                     $and: [
                         { $eq: [{ $year: '$date' }, parseInt(year)] },
-                        { $eq: [{ $month: '$date' }, parseInt(month)] }
                     ]
                 }
             }
@@ -61,10 +61,10 @@ const getExpensesByAccount = async (user, month, year, account) =>
         }
     ])
 
-    if (!expenses) throw new NotFoundException(`Not expenses found`)
+    if (!data) throw new NotFoundException(`Not ${model} found`)
 
-    return expenses
+    return data
 }
 
 
-module.exports = { getExpensesByAccount }
+module.exports = { getTransactionsByAccountPerYear }

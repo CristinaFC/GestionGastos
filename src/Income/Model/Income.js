@@ -23,15 +23,11 @@ const IncomeSchema = new Schema({
         ref: 'Category',
         required: true,
     },
-    description: {
+    concept: {
         type: String,
-        required: false,
+        required: true,
         default: '',
     },
-    fixed: {
-        type: Boolean,
-        default: false
-    }
 })
 
 
