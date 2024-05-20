@@ -25,17 +25,26 @@ const createUser = async (name, lastName, email, password, role = "user") =>
     return user
 }
 
-
+const date = new Date()
+const monthlyExpenses = [
+    {
+        month: date.getMonth() + 1,
+        year: date.getFullYear(),
+        total: 0,
+        limit: 0
+    }
+]
 const defaultCategories = [
-    { name: 'Alimentación', type: 'Expenses', icon: 'food', limit: null },
-    { name: 'Teléfono', type: 'Expenses', icon: 'phone', limit: null },
-    { name: 'Transporte', type: 'Expenses', icon: 'train-car', limit: null },
-    { name: 'Ropa', type: 'Expenses', icon: 'hanger', limit: null },
-    { name: 'Ocio', type: 'Expenses', icon: 'controller-classic', limit: null },
-    { name: 'Restaurantes', type: 'Expenses', icon: 'silverware-fork-knife', limit: null },
-    { name: 'Hogar', type: 'Expenses', icon: 'home-outline', limit: null },
-    { name: 'Salario', type: 'Incomes', icon: 'controller-classic', limit: null },
-    { name: 'Saldo inicial', type: 'Incomes', icon: 'wallet', limit: null },
+    { name: 'Transferencia', type: 'ExpenseIncome', icon: 'bank-transfer', monthlyExpenses },
+    { name: 'Alimentación', type: 'Expenses', icon: 'food', monthlyExpenses },
+    { name: 'Teléfono', type: 'Expenses', icon: 'phone', monthlyExpenses },
+    { name: 'Transporte', type: 'Expenses', icon: 'train-car', monthlyExpenses },
+    { name: 'Ropa', type: 'Expenses', icon: 'hanger', monthlyExpenses },
+    { name: 'Ocio', type: 'Expenses', icon: 'controller-classic', monthlyExpenses },
+    { name: 'Restaurantes', type: 'Expenses', icon: 'silverware-fork-knife', monthlyExpenses },
+    { name: 'Hogar', type: 'Expenses', icon: 'home-outline', monthlyExpenses },
+    { name: 'Salario', type: 'Incomes', icon: 'controller-classic', monthlyExpenses },
+    { name: 'Saldo inicial', type: 'Incomes', icon: 'wallet', monthlyExpenses },
 ];
 
 

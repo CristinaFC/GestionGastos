@@ -5,13 +5,9 @@ const { getDefaultCategories } = require('./GetDefaultCategories')
 
 const getCategoriesByUserAndType = async (userId, type) =>
 {
-    const defaultCategories = await getDefaultCategories(type)
+    const categories = await Category.find({ user: userId, type }).sort({ name: 1 })
 
-    const userCategories = await Category.find({ user: userId, type }).sort({ name: 1 })
-
-    if (!userCategories) throw new NotFoundException(`Not categories found`)
-
-    const categories = combineObjects(defaultCategories, userCategories)
+    if (!categories) throw new NotFoundException(`Not categories found`)
 
     return categories
 }

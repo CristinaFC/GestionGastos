@@ -1,7 +1,7 @@
 const updateAccountAmounts = require('../../Account/Services/UpdateAccountAmounts');
 const Income = require('../Model/Income');
 
-const updateIncome = async (incomeId, body, user) =>
+const updateIncome = async (incomeId, body, user, session) =>
 {
     const { date, amount, account, category, concept } = body;
     const income = await Income.findByIdAndUpdate(

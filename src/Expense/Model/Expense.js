@@ -34,6 +34,11 @@ const ExpenseSchema = new Schema(
             ref: 'FixedExpense',
             default: null
         },
+        exchangeData: {
+            rate: Number,
+            value: Number,
+            currency: String
+        },
         recipient: {
             type: Schema.Types.ObjectId,
             ref: 'Recipient',

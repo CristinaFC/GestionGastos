@@ -5,13 +5,13 @@ const mongoErrorHandler = require('./MongoErrorHandler')
 const { MongoError } = require('mongodb')
 const InvalidEmailOrPasswordException = require('../Exceptions/InvalidEmailOrPasswordException')
 const AlreadyExistsEntityException = require('../Exceptions/AlreadyExistsEntityException')
-const InvalidRefreshTokenException = require('../Exceptions/InvalidRefreshTokenException')
+const InvalidTokenException = require('../Exceptions/InvalidTokenException')
 
 const errorHandler = (err, req, res, next) =>
 {
 
     if (err instanceof InvalidEmailOrPasswordException) return build401Response(err, res);
-    if (err instanceof InvalidRefreshTokenException) return build401Response(err, res)
+    if (err instanceof InvalidTokenException) return build401Response(err, res)
     if (err instanceof ForbiddenException) return build403Response(err, res);
     if (err instanceof NotFoundException) return build404Response(err, res);
     if (err instanceof MongoError)

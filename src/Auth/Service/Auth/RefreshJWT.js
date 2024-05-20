@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
 const User = require('../../Model/User');
-const InvalidRefreshTokenException = require('../../../Core/Exceptions/InvalidRefreshTokenException');
+const InvalidTokenException = require('../../../Core/Exceptions/InvalidTokenException');
 const generateJWT = require('./GenerateJWT')
 const refreshJWT = async (refreshToken) =>
 {
-    const { uid, isRefresh } = jwt.verify(refreshToken.replace('Bearer ', ''), process.env.SECRET_KEY)
+    const { uid, isRefresh } = jwt.verify(refreshToken.replace('Bearer ', ''), process.env.SECRETEORPRIVATEKEY)
 
-    if (!isRefresh) throw new InvalidRefreshTokenException('Invalid token')
+    if (!isRefresh) throw new InvalidTokenException('Invalid token')
 
     const user = await User.findById(uid)
 

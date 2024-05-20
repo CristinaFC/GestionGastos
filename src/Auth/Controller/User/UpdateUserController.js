@@ -1,7 +1,7 @@
 const catchAsync = require('../../../Core/Exceptions/Utils/CatchAsync')
 const updateUser = require('../../Service/User/UpdateUser')
 
-const updateUserController = async (req, res) =>
+const updateUserController = async (req, res, _, session) =>
 {
     const { body } = req
     const id = req.user

@@ -42,20 +42,13 @@ const AccountSchema = new Schema({
         ref: 'Income',
         required: false
     }
-    // date: {
-    //     type: Date,
-    //     required: true,
-    //     default: () => Date.now() + 7 * 24 * 60 * 60 * 1000
-    // },
 
 })
-
 AccountSchema.index({ name: 1, user: 1 }, { unique: true });
-
 
 AccountSchema.methods.toJSON = function ()
 {
-    const { __v, password, _id, ...account } = this.toObject();
+    const { __v, _id, ...account } = this.toObject();
     account.uid = _id;
     return account;
 }

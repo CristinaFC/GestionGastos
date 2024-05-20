@@ -2,7 +2,7 @@ const Balance = require('../../Balance/Model/Balance');
 const updateBalance = require('../../Balance/Services/UpdateBalance');
 const Account = require('../Model/Account');
 
-const updateAccount = async (accountId, body, user) =>
+const updateAccount = async (accountId, body, user, session) =>
 {
     const { name, icon, isBalance } = body;
 
@@ -15,14 +15,14 @@ const updateAccount = async (accountId, body, user) =>
             accountId,
             { name, user, icon, isBalance, balance: balance._id },
             { new: true },
-        )
+        ).session(session)
     }
     else account = await Account.findByIdAndUpdate(
         accountId,
         { name, user, icon, isBalance, balance: null },
         { new: true },
-    )
-    await updateBalance(user)
+    ).session(session)
+    await updateBalance(user, session)
     return account
 }
 

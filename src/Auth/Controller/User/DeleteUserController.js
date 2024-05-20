@@ -2,7 +2,7 @@ const catchAsync = require("../../../Core/Exceptions/Utils/CatchAsync");
 const deleteUser = require("../../Service/User/DeleteUser");
 
 
-const deleteUserController = async (req, res) =>
+const deleteUserController = async (req, res, _, session) =>
 {
     const id = req.user;
 

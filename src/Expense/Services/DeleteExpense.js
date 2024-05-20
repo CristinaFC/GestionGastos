@@ -2,14 +2,13 @@ const updateAccountAmounts = require('../../Account/Services/UpdateAccountAmount
 const NotFoundException = require('../../Core/Exceptions/NotFoundException')
 const Expense = require('../Model/Expense')
 
-const deleteExpense = async (expenseId) =>
+const deleteExpense = async (expenseId, session) =>
 {
-    const expense = await Expense.findByIdAndDelete(expenseId)
+    const expense = await Expense.findOneAndDelete({ _id: expenseId }).session(session)
 
-    if (!expense)
-        throw new NotFoundException(`Expense with the id ${expenseId} not found`)
+    if (!expense) throw new NotFoundException(`Expense with the id ${expenseId} not found`)
 
-    await updateAccountAmounts(expense.account, expense.user)
+    await updateAccountAmounts(expense.account, expense.user, session)
     return expense
 }
 

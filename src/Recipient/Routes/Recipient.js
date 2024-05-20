@@ -22,8 +22,16 @@ router.post(
     '/',
     [
         validateJWT,
-        check('name').not().isEmpty().escape(),
-        check('recipientInfo').notEmpty(),
+        check('name').not().isEmpty().escape().withMessage('Campo obligatorio'),
+        check('recipientInfo').custom((value) =>
+        {
+            if (!Array.isArray(value) || value.length === 0)
+            {
+                throw new Error('Introduzca al menos un campo de contacto');
+            }
+            return true;
+        }),
+        // check('recipientInfo').not().isEmpty().withMessage('Introduzca al menos un campo de contacto'),
         validateFields,
     ],
     createRecipientController,

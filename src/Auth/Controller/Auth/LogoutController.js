@@ -3,7 +3,7 @@ const catchAsync = require('../../../Core/Exceptions/Utils/CatchAsync')
 const jwt = require('jsonwebtoken');
 
 
-const logoutController = async (req, res) =>
+const logoutController = async (req, res, _, session) =>
 {
     const authHeader = req.header('Authorization')
 

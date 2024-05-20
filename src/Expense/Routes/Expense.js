@@ -12,6 +12,9 @@ const {
     updateExpenseController,
     deleteExpenseController
 } = require('../Controllers')
+const catchAsync = require('../../Core/Exceptions/Utils/CatchAsync')
+const withTransaction = require('../../Core/Exceptions/Utils/WithTransactions')
+
 const router = Router()
 
 router.get('/',
@@ -50,7 +53,7 @@ router.post(
         check('description').optional().isString().escape(),
         validateFields,
     ],
-    createExpenseController,
+    catchAsync(createExpenseController, withTransaction),
 )
 
 router.put(

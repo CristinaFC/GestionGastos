@@ -17,12 +17,12 @@ const createExpense = require('../../Expense/Services/CreateExpense');
 
 const createFixedExpense = async (user, props) =>
 {
-    let { initDate, amount, account, category, concept, period, hasEndDate, endDate, recipient } = props;
+    let { initDate, amount, account, category, concept, period, hasEndDate, endDate, } = props;
 
     const userExists = await User.findById(user);
     if (!userExists) throw new NotFoundException(`User with id ${user} not found`);
 
-    const recipientId = await getRecipientId(user, recipient);
+    // const recipientId = await getRecipientId(user, recipient);
 
     const categoryFound = await Category.findById(category);
 
@@ -51,10 +51,9 @@ const createFixedExpense = async (user, props) =>
         hasEndDate,
         endDate,
         user: user.id,
-        recipient: recipientId
     });
 
-    await fixedExpense.save();
+    await fixedExpense.save({ session });
     /**Si comienza hoy 
     * se calcula la próxima insersión 
     * y se asigna la últ. insersión a fecha de hoy
@@ -66,9 +65,8 @@ const createFixedExpense = async (user, props) =>
         await createExpense(user, {
             date, amount, account,
             category, concept,
-            recipientId,
             fixedExpenseRef: fixedExpense.id
-        })
+        }, session)
 
         const nextInsertion = calculateNextInsertion(period, date)
         fixedExpense.nextInsertion = nextInsertion
@@ -76,7 +74,7 @@ const createFixedExpense = async (user, props) =>
 
     } else fixedExpense.nextInsertion = initDate
 
-    await fixedExpense.save();
+    await fixedExpense.save({ session });
 
     return fixedExpense;
 

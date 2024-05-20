@@ -34,6 +34,33 @@ const getGraphs = async (user) =>
         }
     ])
 
+    const lastYearExpenses = await Expense.aggregate([
+        {
+            $match: {
+                user: new ObjectId(user),
+                $expr: {
+                    $eq: [{ $year: "$date" }, new Date().getFullYear() - 1]
+                }
+            }
+        },
+        {
+            $group: {
+                _id: { $month: "$date" },
+                total: { $sum: "$amount" }
+            }
+        },
+        {
+            $sort: { "_id": 1 }
+        },
+        {
+            $project: {
+                _id: 0,
+                month: "$_id",
+                total: 1
+            }
+        }
+    ])
+
     const incomes = await Income.aggregate([
         {
             $match: {
@@ -64,8 +91,9 @@ const getGraphs = async (user) =>
 
     if (!expenses) throw new NotFoundException(`Not expenses found`)
     if (!incomes) throw new NotFoundException(`Not incomes found`)
+    if (!lastYearExpenses) throw new NotFoundException(`Not lastYearExpenses found`)
 
-    return { expenses, incomes }
+    return { expenses, incomes, lastYearExpenses }
 }
 
 

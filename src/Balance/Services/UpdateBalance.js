@@ -4,8 +4,7 @@ const Balance = require('../Model/Balance');
 
 const { ObjectId } = require('mongodb');
 
-
-const updateBalance = async (user) =>
+const updateBalance = async (user, session) =>
 {
     const incomes = await Account.aggregate([
         {
@@ -17,7 +16,7 @@ const updateBalance = async (user) =>
                 totalIncomes: { $sum: '$totalIncomes' }
             }
         }
-    ]);
+    ]).session(session);
 
     const expenses = await Account.aggregate([
         {
@@ -29,19 +28,17 @@ const updateBalance = async (user) =>
                 totalExpenses: { $sum: '$totalExpenses' }
             }
         }
-    ]);
+    ]).session(session);
 
     const totalIncomes = incomes[0]?.totalIncomes || 0;
     const totalExpenses = expenses[0]?.totalExpenses || 0;
-    console.log('Total de gastos de las cuentas con isBalance:', totalExpenses);
-    console.log('Total de ingresos de las cuentas con isBalance:', totalIncomes);
 
-    const totalAmount = totalIncomes - totalExpenses
+    const totalAmount = totalIncomes - totalExpenses;
 
-    await Balance.findOneAndUpdate({ user: new ObjectId(user) }, { totalAmount, totalIncomes, totalExpenses }, { new: true })
+    await Balance.findOneAndUpdate({ user: new ObjectId(user) }, { totalAmount, totalIncomes, totalExpenses }, { new: true }).session(session);
 
-    return
-}
+    return;
+};
 
 
 module.exports = updateBalance

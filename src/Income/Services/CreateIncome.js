@@ -7,13 +7,13 @@ const Category = require('../../Category/Model/Category');
 const Account = require('../../Account/Model/Account');
 const updateAccountAmounts = require('../../Account/Services/UpdateAccountAmounts');
 
-const createIncome = async (user, props) =>
+const createIncome = async (user, props, session) =>
 {
     const { date, amount, account, category, concept } = props
     const userExists = await User.findById(user)
 
     const categoryFound = await Category.findById(category)
-    if (categoryFound?.type !== "Incomes")
+    if (categoryFound?.type !== "Incomes" && categoryFound?.type !== "ExpenseIncome")
         throw new ForbiddenException(`Forbidden - Category type needs to be "Incomes" `)
 
     if (categoryFound?.user.toString() !== user.id && categoryFound.readOnly === false)
@@ -30,9 +30,9 @@ const createIncome = async (user, props) =>
         throw new NotFoundException(`User with id ${user} not found`)
 
     const income = new Income({ date, amount, account, category, concept, user })
-    await income.save()
+    await income.save({ session })
 
-    await updateAccountAmounts(account, user)
+    await updateAccountAmounts(account, user, session)
 
     // accountFound.totalAmount += parseFloat(amount)
     // accountFound.totalIncomes += parseFloat(amount)

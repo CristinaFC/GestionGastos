@@ -44,8 +44,7 @@ const getExpensesGroupedByCategories = async (userId, year) =>
     ]);
 
 
-    if (!expenses)
-        throw new NotFoundException(`No expenses found for the year ${year}`);
+    if (!expenses) throw new NotFoundException(`No expenses found for the year ${year}`);
 
     return expenses;
 

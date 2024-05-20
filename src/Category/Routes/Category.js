@@ -9,15 +9,17 @@ const getCategoryController = require('../Controllers/GetCategoryController')
 const getCategoriesByUserController = require('../Controllers/GetCategoriesByUserController')
 const hasPermission = require('../Middlewares/HasPermission')
 
-
 const router = Router()
 
 router.get('/',
     [
         validateJWT,
         query('type').optional(),
+        query('limit').optional(),
     ],
     getCategoriesByUserController)
+
+
 
 router.get(
     '/:id',

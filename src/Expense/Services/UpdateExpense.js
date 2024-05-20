@@ -2,7 +2,9 @@ const updateAccountAmounts = require('../../Account/Services/UpdateAccountAmount
 const Expense = require('../Model/Expense');
 const insertAutomaticFixedExpenses = require('./InsertFixedExpensesCopies');
 
-const updateExpense = async (expenseId, body, user) =>
+
+//NO SE USA
+const updateExpense = async (expenseId, body, user, session) =>
 {
     let { amount, account, category, date, description } = body;
 
@@ -10,9 +12,9 @@ const updateExpense = async (expenseId, body, user) =>
         expenseId,
         { date, amount, account, category, description },
         { new: true },
-    )
+    ).session(session)
 
-    await updateAccountAmounts(account, user)
+    await updateAccountAmounts(account, user, session)
     await updateCategoryAmount(date, category, amount)
     return expense
 

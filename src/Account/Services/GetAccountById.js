@@ -4,7 +4,7 @@ const Account = require('../Model/Account')
 
 const getAccount = async (id) =>
 {
-    const account = await Account.findById(id)
+    const account = await Account.findById(id).populate('initAmountRef')
 
     if (!account) throw new NotFoundException(`Account with the id ${id} not found`)
 

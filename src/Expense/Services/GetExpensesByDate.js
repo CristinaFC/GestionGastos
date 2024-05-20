@@ -15,10 +15,20 @@ const getExpensesByDate = async (userId, month, year) =>
         }
     }).populate("category").populate('account')
 
+    const prevMonthExpenses = await Expense.find({
+        user: new ObjectId(userId),
+        $expr: {
+            $and: [
+                { $eq: [{ $year: '$date' }, parseInt(year)] },
+                { $eq: [{ $month: '$date' }, parseInt(month - 1)] }
+            ]
+        }
+    }).populate("category").populate('account')
+
     if (!expenses) throw new NotFoundException(`Not expenses found`)
 
 
-    return expenses
+    return { expenses, prevMonthExpenses }
 }
 
 

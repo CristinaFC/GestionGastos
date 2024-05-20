@@ -15,11 +15,7 @@ const cors = require('cors');
 const errorHandler = require('./Core/Service/ErrorHandler')
 
 const { dbConnection } = require('./Core/Configuration/databaseConfig');
-const schedule = require('node-schedule');
-const { getFixedExpenses } = require('./FixedExpense/Services/GetActiveFixedExpenses')
-const Expense = require('./Expense/Model/Expense')
-const FixedExpense = require('./FixedExpense/Model/FixedExpense')
-const { calculateNextInsertion } = require('./FixedExpense/Helpers/Helpers')
+const withTransaction = require('./Core/Exceptions/Utils/WithTransactions')
 
 
 class Server
@@ -44,13 +40,17 @@ class Server
         //Control de errores personalizado
         this.app.use(errorHandler)
 
+        this.app.use(withTransaction);
+
         this.scheduleTasks()
 
     }
 
+
     async connectDB()
     {
         await dbConnection();
+        // await generateFakeData(5)
     }
 
     middlewares()
@@ -66,62 +66,6 @@ class Server
 
     async scheduleTasks()
     {
-        const job = schedule.scheduleJob('0 0 * * *', async function (fireDate)
-        {
-            const fixedExpenses = await getFixedExpenses();
-            const actualDate = new Date()
-            actualDate.setHours(0, 0, 0, 0);
-            fixedExpenses.forEach(async (fixedExp) =>
-            {
-
-                let {
-                    amount, user,
-                    account, category,
-                    description, date,
-                    hasEndDate,
-                    dateEndOf, period,
-                    lastInsertion, nextInsertion } = fixedExp
-                dateEndOf?.setHours(0, 0, 0, 0);
-
-                //Si no tiene fecha final o si la fecha de finalización es posterior o igual a hoy
-                if (!hasEndDate || actualDate?.getTime() <= dateEndOf?.getTime()) 
-                {
-                    nextInsertion?.setHours(0, 0, 0, 0);
-
-                    /**Si la próx. inser. es hoy se añade un gasto*/
-                    if (nextInsertion?.getTime() === actualDate?.getTime())
-                    {
-                        const expense = new Expense({
-                            amount,
-                            user,
-                            account,
-                            category,
-                            description,
-                            date: actualDate,
-                            fixedExpenseRef: fixedExp.uid
-                        })
-                        await expense.save()
-
-                        const nextInsertion = calculateNextInsertion(period, actualDate)
-                        if (hasEndDate)
-                        {
-                            nextInsertion.setHours(0, 0, 0, 0);
-                            endDate.setHours(0, 0, 0, 0);
-                            //Si la fecha final es antes que la próx insersión, deja de ser un gasto fijo
-                            if (endDate.getTime() < nextInsertion.getTime())
-                                await FixedExpense.updateOne({ _id: fixedExp.id },
-                                    { $set: { active: false, lastInsertion: actualDate, nextInsertion: null } })
-
-                        } else
-                            await FixedExpense.updateOne({ _id: fixedExp.id },
-                                { $set: { lastInsertion: actualDate, active: true, nextInsertion } })
-
-                    }
-
-                } else if (dateEndOf?.getTime() > actualDate?.getTime())
-                    await FixedExpense.updateOne({ _id: fixedExp.id }, { $set: { active: false } })
-            })
-        });
 
     }
 

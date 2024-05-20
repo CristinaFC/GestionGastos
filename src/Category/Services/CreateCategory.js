@@ -7,12 +7,17 @@ const createCategory = async (user, props) =>
 {
     const userExists = await User.findById(user)
 
-    if (!userExists)
-        throw new NotFoundException(`User with id ${user} not found`)
+    if (!userExists) throw new NotFoundException(`User with id ${user} not found`)
 
     const { name, icon, type, limit } = props
-
-    const category = new Category({ name, icon, user, type, limit })
+    const date = new Date()
+    let monthlyExpenses = {
+        month: date.getMonth() + 1,
+        year: date.getFullYear(),
+        total: 0,
+        limit
+    }
+    const category = new Category({ name, icon, user, type, monthlyExpenses })
     await category.save()
 
     return category

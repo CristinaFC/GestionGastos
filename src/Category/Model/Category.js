@@ -4,6 +4,7 @@ const CategorySchema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true
     },
     icon: {
         type: String,
@@ -18,20 +19,13 @@ const CategorySchema = new Schema({
         default: 'Expense',
         required: true
     },
-    limit: {
-        type: Number,
-        default: 0,
-        required: false
-    },
     monthlyExpenses: [{
         month: Number,
         year: Number,
-        total: Number
+        total: Number,
+        limit: Number
     }],
-    readOnly: {
-        type: Boolean,
-        default: false
-    }
+
 
 })
 

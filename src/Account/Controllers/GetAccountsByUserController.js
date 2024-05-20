@@ -2,7 +2,7 @@ const catchAsync = require('../../Core/Exceptions/Utils/CatchAsync')
 const { getAccountsByUser } = require('../Services/GetAccountsByUser')
 
 
-const getAccountsByUserController = async (req, res) =>
+const getAccountsByUserController = async (req, res,) =>
 {
     const userId = req.user.id
     const accounts = await getAccountsByUser(userId)

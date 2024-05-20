@@ -3,11 +3,17 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../Model/User');
 const catchAsync = require('../../Core/Exceptions/Utils/CatchAsync');
-
+const InvalidRefreshTokenException = require('../../Core/Exceptions/InvalidTokenException');
 
 const validateJWT = async (req, res = response, next) =>
 {
-    const token = req.header('Authorization');
+    let token = req.header('Authorization');
+
+    const decoded = jwt.decode(token.replace('Bearer ', ''));
+
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (decoded.exp < currentTime) throw new InvalidRefreshTokenException(`Token expired`)
 
     if (!token) return res.status(401).json({ message: 'Unauthorized' })
 

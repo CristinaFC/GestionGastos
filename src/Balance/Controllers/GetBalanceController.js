@@ -2,7 +2,7 @@ const catchAsync = require('../../Core/Exceptions/Utils/CatchAsync')
 const getBalanceByUser = require('../Services/GetBalanceByUser')
 
 
-const getBalanceController = async (req, res) =>
+const getBalanceController = async (req, res, _, session) =>
 {
     const userId = req.user.id
 

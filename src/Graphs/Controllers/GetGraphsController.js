@@ -2,7 +2,7 @@ const catchAsync = require('../../Core/Exceptions/Utils/CatchAsync')
 const { getGraphs } = require('../Services/GetGraphs')
 
 
-const getGraphsController = async (req, res) =>
+const getGraphsController = async (req, res, _, session) =>
 {
     let data = await getGraphs(req.user);
 

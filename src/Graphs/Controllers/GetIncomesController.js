@@ -5,7 +5,7 @@ const { getTransactionsByCategoriesAndDate } = require('../Services/GetTransacti
 const { getTransactionsByDatesComparation } = require('../Services/GetTransactionsByDatesComparation')
 const { getTransactionsByYear } = require('../Services/GetTransactionsByYear')
 
-const getIncomesController = async (req, res) =>
+const getIncomesController = async (req, res, _, session) =>
 {
     const { user } = req
     const { month, year, category, account, monthTwo, yearTwo } = req.query

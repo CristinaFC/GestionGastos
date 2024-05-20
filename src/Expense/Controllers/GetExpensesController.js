@@ -17,7 +17,7 @@ const getExpensesByUserController = async (req, res) =>
     else if ('category' in req.query && 'month' in req.query && 'year' in req.query)
         expenses = await getExpensesByCategoryAndDate(userId, category, month, year)
     else if ('month' in req.query && 'year' in req.query)
-        expenses = await getExpensesByDate(userId, month, year)
+        expenses = (await getExpensesByDate(userId, month, year))
     else if ('account' in req.query)
         expenses = await getExpensesByAccount(userId, account)
     else if ('year' in req.query)
