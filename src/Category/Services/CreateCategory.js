@@ -17,7 +17,11 @@ const createCategory = async (user, props) =>
         total: 0,
         limit
     }
-    const category = new Category({ name, icon, user, type, monthlyExpenses })
+
+    let category;
+    if (type === "Expenses") category = new Category({ name, icon, user, type, monthlyExpenses })
+    else category = new Category({ name, icon, user, type })
+
     await category.save()
 
     return category

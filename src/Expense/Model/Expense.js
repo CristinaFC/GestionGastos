@@ -39,12 +39,6 @@ const ExpenseSchema = new Schema(
             value: Number,
             currency: String
         },
-        recipient: {
-            type: Schema.Types.ObjectId,
-            ref: 'Recipient',
-            default: null
-        }
-
     },
     {
         timestamps: true

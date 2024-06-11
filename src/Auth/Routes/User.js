@@ -22,11 +22,10 @@ router.get(
 router.post(
     '/',
     [
-        check('name').optional().not().isEmpty().isString().escape(),
-        check('lastName').optional().not().isEmpty().isString().escape(),
+        check('name').not().isEmpty().isString().escape(),
+        check('lastName').not().isEmpty().isString().escape(),
         check('email', 'email is required').isEmail().escape(),
         check('password', 'password is required').not().isEmpty().escape(),
-        check('role').not().isEmpty(),
         validateFields,
     ],
     createUserController,

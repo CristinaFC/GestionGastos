@@ -54,11 +54,6 @@ const FixedExpenseSchema = new Schema(
             type: Number,
             default: 1,
         },
-        recipient: {
-            type: Schema.Types.ObjectId,
-            ref: 'Recipient',
-            default: null
-        }
     },
     {
         timestamps: true

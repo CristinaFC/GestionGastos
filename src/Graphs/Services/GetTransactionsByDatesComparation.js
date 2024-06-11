@@ -32,9 +32,15 @@ async function getTransactions(user, month, year, model)
             }
         },
         {
+            $lookup: {
+                from: 'categories',
+                localField: 'category',
+                foreignField: '_id',
+                as: 'categoryData'
+            }
+        },
+        {
             $match: {
-                'accountData.isBalance': true,
-                'accountData.user': new ObjectId(user),
                 user: new ObjectId(user),
                 $expr: {
                     $and: [
@@ -45,14 +51,10 @@ async function getTransactions(user, month, year, model)
             }
         },
         {
-            $lookup: {
-                from: 'categories',
-                localField: 'category',
-                foreignField: '_id',
-                as: 'categoryData'
+            $match: {
+                'accountData.isBalance': true,
             }
         },
-
         {
             $group: {
                 _id: {
@@ -70,11 +72,13 @@ async function getTransactions(user, month, year, model)
         {
             $project: {
                 _id: 0,
-                category: "$_id.category",
+                category: '$_id.category',
                 total: 1
             }
         }
     ]);
+
+
 }
 
 

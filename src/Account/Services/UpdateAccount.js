@@ -22,6 +22,7 @@ const updateAccount = async (accountId, body, user, session) =>
         { name, user, icon, isBalance, balance: null },
         { new: true },
     ).session(session)
+
     await updateBalance(user, session)
     return account
 }

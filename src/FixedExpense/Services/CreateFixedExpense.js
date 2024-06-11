@@ -5,24 +5,16 @@ const ForbiddenException = require('../../Core/Exceptions/ForbiddenException');
 const FixedExpense = require('../Model/FixedExpense');
 const Category = require('../../Category/Model/Category');
 const Account = require('../../Account/Model/Account');
-const { isValidObjectId } = require('mongoose');
-const { ObjectId } = require('mongodb');
-const Periods = require('../../Core/Enumeration/Periods');
-const updateAccountAmounts = require('../../Account/Services/UpdateAccountAmounts');
-const Expense = require('../../Expense/Model/Expense');
 const { calculateNextInsertion } = require('../Helpers/Helpers');
-const createRecipient = require('../../Recipient/Services/CreateRecipient');
-const Recipient = require('../../Recipient/Model/Recipient');
 const createExpense = require('../../Expense/Services/CreateExpense');
 
-const createFixedExpense = async (user, props) =>
+const createFixedExpense = async (user, props, session) =>
 {
     let { initDate, amount, account, category, concept, period, hasEndDate, endDate, } = props;
 
     const userExists = await User.findById(user);
     if (!userExists) throw new NotFoundException(`User with id ${user} not found`);
 
-    // const recipientId = await getRecipientId(user, recipient);
 
     const categoryFound = await Category.findById(category);
 
@@ -81,23 +73,6 @@ const createFixedExpense = async (user, props) =>
 }
 
 
-const getRecipientId = async (user, recipient) =>
-{
-    let recipientId;
 
-    if (recipient)
-    {
-        if (isValidObjectId(recipient))
-        {
-            const recipientExists = await Recipient.findById(recipient);
-            if (!recipientExists)
-                throw new NotFoundException(`Recipient with id ${recipient} not found`);
-            recipientId = recipient;
-        } else
-            recipientId = await createRecipient(user, recipient).uid;
-    }
-
-    return recipientId;
-};
 
 module.exports = createFixedExpense

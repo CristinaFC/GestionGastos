@@ -28,6 +28,19 @@ const getTransactionsByCategoriesAndDate = async (user, month, year, model) =>
         },
 
         {
+            $lookup: {
+                from: "accounts",
+                localField: "account",
+                foreignField: "_id",
+                as: "accountInfo"
+            }
+        },
+        {
+            $match: {
+                "accountInfo.isBalance": true
+            }
+        },
+        {
             $group: {
                 _id: {
                     date: {

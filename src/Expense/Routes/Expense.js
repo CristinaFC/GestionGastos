@@ -26,7 +26,6 @@ router.get('/',
         query('year').optional(),
         query('category').isMongoId(),
         query('account').isMongoId(),
-        query('recipient').optional().isMongoId(),
     ],
     getExpensesController)
 
@@ -50,7 +49,7 @@ router.post(
         check('amount').not().isEmpty().isFloat({ gt: 0.0 }).escape(),
         check('account').not().isEmpty().isMongoId().escape(),
         check('category').not().isEmpty().isMongoId().escape(),
-        check('description').optional().isString().escape(),
+        check('concept').not().isEmpty().isString().escape(),
         validateFields,
     ],
     catchAsync(createExpenseController, withTransaction),
@@ -66,7 +65,7 @@ router.put(
         check('amount').not().isEmpty().isFloat({ gt: 0.0 }).escape(),
         check('account').not().isEmpty().isMongoId().escape(),
         check('category').not().isEmpty().isMongoId().escape(),
-        check('description').optional().isString().escape(),
+        check('concept').not().isEmpty().isString().escape(),
         validateFields,
 
     ],

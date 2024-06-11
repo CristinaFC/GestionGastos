@@ -39,8 +39,13 @@ const AccountSchema = new Schema({
     },
     initAmountRef: {
         type: Schema.Types.ObjectId,
-        ref: 'Income',
+        refPath: 'initAmountRefModel',
         required: false
+    },
+    initAmountRefModel: {
+        type: String,
+        required: false,
+        enum: ['Income', 'Expense']
     }
 
 })

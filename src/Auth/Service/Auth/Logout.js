@@ -2,7 +2,6 @@
 
 const logout = async (req) =>
 {
-
     req.logout();
 }
 

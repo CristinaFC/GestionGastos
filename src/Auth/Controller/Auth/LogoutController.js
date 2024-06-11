@@ -1,17 +1,21 @@
 const catchAsync = require('../../../Core/Exceptions/Utils/CatchAsync')
-
 const jwt = require('jsonwebtoken');
+const Blacklist = require('../../Model/Blacklist')
 
 
 const logoutController = async (req, res, _, session) =>
 {
-    const authHeader = req.header('Authorization')
+    const token = req.header('Authorization').replace('Bearer ', '');
+    const decoded = jwt.decode(token);
 
-    jwt.sign(authHeader.replace('Bearer ', ''), "", { expiresIn: 1 }, (logout, err) =>
-    {
-        if (logout) { res.send({ msg: 'You have been Logged Out' }); }
-        else { res.send({ msg: 'Error' }); }
+    const blacklist = new Blacklist({
+        token: token,
+        expiresAt: new Date(decoded.exp * 1000),
     });
+
+    await blacklist.save();
+
+    res.status(200).send({ msg: 'You have been logged out' });
 
 }
 

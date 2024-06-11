@@ -8,7 +8,6 @@ const incomesRoutes = require('./Income/Routes/Income')
 const balanceRoutes = require('./Balance/Routes/Balance')
 const graphsRoutes = require('./Graphs/Routes/Graphs')
 const fixedExpensesRoutes = require('./FixedExpense/Routes/FixedExpense')
-const recipientsRoutes = require('./Recipient/Routes/Recipient')
 
 const express = require('express');
 const cors = require('cors');
@@ -16,12 +15,17 @@ const errorHandler = require('./Core/Service/ErrorHandler')
 
 const { dbConnection } = require('./Core/Configuration/databaseConfig');
 const withTransaction = require('./Core/Exceptions/Utils/WithTransactions')
+const Expense = require('./Expense/Model/Expense')
+const FixedExpense = require('./FixedExpense/Model/FixedExpense')
+const { getFixedExpenses } = require('./FixedExpense/Services/GetFixedExpenses')
+const { calculateNextInsertion } = require('./FixedExpense/Helpers/Helpers')
+const scheduleTasks = require('./Core/Service/CronJob')
+const { generarGastosDesdeDiciembre2022, borrarGastosDel2024, generarIngresosDesdeDiciembre2022, eliminarIngresosNoSaldoInicial } = require('../DataGenerator')
 
 
 class Server
 {
 
-    app = express();
     constructor()
     {
         this.app = express();
@@ -42,7 +46,11 @@ class Server
 
         this.app.use(withTransaction);
 
-        this.scheduleTasks()
+        scheduleTasks()
+        // generarGastosDesdeDiciembre2022()
+        // borrarGastosDel2024()
+        generarIngresosDesdeDiciembre2022()
+        // eliminarIngresosNoSaldoInicial()
 
     }
 
@@ -50,7 +58,6 @@ class Server
     async connectDB()
     {
         await dbConnection();
-        // await generateFakeData(5)
     }
 
     middlewares()
@@ -64,10 +71,7 @@ class Server
 
     }
 
-    async scheduleTasks()
-    {
 
-    }
 
     routes()
     {
@@ -80,7 +84,6 @@ class Server
         this.app.use('/api/incomes', incomesRoutes)
         this.app.use('/api/balances', balanceRoutes)
         this.app.use('/api/graphs', graphsRoutes)
-        this.app.use('/api/recipients', recipientsRoutes)
     }
 
     listen()
@@ -92,6 +95,7 @@ class Server
     }
 
 }
+
 
 
 module.exports = Server;

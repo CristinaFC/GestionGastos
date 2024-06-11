@@ -1,14 +1,14 @@
 const NotFoundException = require("../../../Core/Exceptions/NotFoundException")
 const catchAsync = require("../../../Core/Exceptions/Utils/CatchAsync")
 
-const cascadeDelete = async (Model, userId) =>
+const cascadeDelete = async (Model, userId, session) =>
 {
 
-    const documents = await Model.find({ user: userId })
+    const documents = await Model.find({ user: userId }).session(session)
 
-    if (!documents) throw new NotFoundException('Not found')
+    if (documents.length === 0) throw new NotFoundException('No se encontraron documentos');
 
-    Array.from(documents).forEach(async (doc) => await Model.deleteOne(doc))
+    for (const doc of documents) await Model.deleteOne({ _id: doc._id }).session(session);
 
     return
 

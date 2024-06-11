@@ -3,13 +3,15 @@ const User = require('../../Model/User');
 const Balance = require('../../../Balance/Model/Balance');
 const Category = require('../../../Category/Model/Category');
 
-const createUser = async (name, lastName, email, password, role = "user") =>
+const createUser = async (props) =>
 {
+    let { name, lastName, email, password } = props;
+
     const salt = genSaltSync();
 
     password = hashSync(password, salt);
 
-    const user = new User({ name, lastName, email, password, role })
+    const user = new User({ name, lastName, email, password })
     await user.save()
 
     const balance = new Balance({ totalIncomes: 0, totalExpenses: 0, totalAmount: 0, user: user._id })
@@ -43,8 +45,8 @@ const defaultCategories = [
     { name: 'Ocio', type: 'Expenses', icon: 'controller-classic', monthlyExpenses },
     { name: 'Restaurantes', type: 'Expenses', icon: 'silverware-fork-knife', monthlyExpenses },
     { name: 'Hogar', type: 'Expenses', icon: 'home-outline', monthlyExpenses },
-    { name: 'Salario', type: 'Incomes', icon: 'controller-classic', monthlyExpenses },
-    { name: 'Saldo inicial', type: 'Incomes', icon: 'wallet', monthlyExpenses },
+    { name: 'Salario', type: 'Incomes', icon: 'controller-classic' },
+    { name: 'Saldo inicial', type: 'ExpenseIncome', icon: 'wallet' },
 ];
 
 

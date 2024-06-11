@@ -26,10 +26,8 @@ const transfer = async (user, props, session) =>
 
     const date = new Date()
     await createExpense(user, { account: fromAccount, date, category: category._id, amount, concept }, session)
-    updateAccountAmounts(sourceAccount, userExists)
 
     await createIncome(user, { account: toAccount, date, category: category._id, amount, concept }, session)
-    updateAccountAmounts(destinationAccount, userExists, session)
 
     return
 }

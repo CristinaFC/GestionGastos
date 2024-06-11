@@ -17,12 +17,15 @@ const updateCategory = async (categoryId, body) =>
     category.icon = icon;
     category.type = type;
 
-    const index = category.monthlyExpenses?.findIndex(monthlyExpense =>
-        monthlyExpense.month === month && monthlyExpense.year === date.getFullYear()
-    );
+    if (type === 'Expenses')
+    {
+        const index = category.monthlyExpenses?.findIndex(monthlyExpense =>
+            monthlyExpense.month === month && monthlyExpense.year === date.getFullYear()
+        );
 
-    if (index === -1) category.monthlyExpenses.push({ month: month, year: date.getFullYear(), limit, total: 0 })
-    else category.monthlyExpenses[index].limit = limit
+        if (index === -1) category.monthlyExpenses.push({ month: month, year: date.getFullYear(), limit, total: 0 })
+        else category.monthlyExpenses[index].limit = limit
+    }
 
 
     await category.save()

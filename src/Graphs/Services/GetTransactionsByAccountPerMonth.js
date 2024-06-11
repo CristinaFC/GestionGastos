@@ -6,6 +6,7 @@ const { ObjectId } = require('mongodb');
 const getTransactionsByAccountPerMonth = async (user, month, year, account, model) =>
 {
     const Model = model === "Expense" ? Expense : Income
+
     const data = await Model.aggregate([
         {
             $match: {

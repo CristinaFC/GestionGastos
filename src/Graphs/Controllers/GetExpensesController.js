@@ -14,12 +14,12 @@ const getExpensesController = async (req, res, _, session) =>
 
     if ('month' in req.query && 'monthTwo' in req.query && 'year' in req.query && 'yearTwo' in req.query)
         expenses = await getTransactionsByDatesComparation(user, month, monthTwo, year, yearTwo, "Expense")
-    else if ('account' in req.query && 'year' in req.query)
-        expenses = await getTransactionsByAccountPerYear(user, year, account, "Expense")
-    else if ('month' in req.query && 'year' in req.query)
-        expenses = await getTransactionsByCategoriesAndDate(user, month, year, "Expense")
     else if ('account' in req.query && 'month' in req.query && 'year' in req.query)
         expenses = await getTransactionsByAccountPerMonth(user, month, year, account, "Expense")
+    else if ('month' in req.query && 'year' in req.query)
+        expenses = await getTransactionsByCategoriesAndDate(user, month, year, "Expense")
+    else if ('account' in req.query && 'year' in req.query)
+        expenses = await getTransactionsByAccountPerYear(user, year, account, "Expense")
     else expenses = await getTransactionsByYear(user, year, category, "Expense")
 
 

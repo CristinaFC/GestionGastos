@@ -17,6 +17,19 @@ const getGraphs = async (user) =>
             }
         },
         {
+            $lookup: {
+                from: "accounts",
+                localField: "account",
+                foreignField: "_id",
+                as: "accountInfo"
+            }
+        },
+        {
+            $match: {
+                "accountInfo.isBalance": true
+            }
+        },
+        {
             $group: {
                 _id: { $month: "$date" },
                 total: { $sum: "$amount" }
@@ -69,6 +82,19 @@ const getGraphs = async (user) =>
                     $gte: new Date(new Date().getFullYear(), 0, 1),
                     $lt: new Date(new Date().getFullYear() + 1, 0, 1)
                 }
+            }
+        },
+        {
+            $lookup: {
+                from: "accounts",
+                localField: "account",
+                foreignField: "_id",
+                as: "accountInfo"
+            }
+        },
+        {
+            $match: {
+                "accountInfo.isBalance": true
             }
         },
         {

@@ -11,6 +11,19 @@ const getIncomesGroupedByCategories = async (userId, year) =>
         },
         {
             $lookup: {
+                from: "accounts",
+                localField: "account",
+                foreignField: "_id",
+                as: "accountInfo"
+            }
+        },
+        {
+            $match: {
+                "accountInfo.isBalance": true
+            }
+        },
+        {
+            $lookup: {
                 from: 'categories',
                 localField: 'category',
                 foreignField: '_id',

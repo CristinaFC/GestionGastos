@@ -4,6 +4,7 @@ const { Router } = require('express')
 const { validateFields } = require('../../Core/Middlewares/ValidateFields')
 const loginController = require('../Controller/Auth/LoginController')
 const logoutController = require('../Controller/Auth/LogoutController')
+const Logout = require('../Controller/Auth/LogoutController')
 
 const validateJWT = require('../Middlewares/ValidateJWT')
 const refreshJWTController = require('../Controller/Auth/RefreshJWTController')

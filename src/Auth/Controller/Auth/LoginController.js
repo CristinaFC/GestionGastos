@@ -4,7 +4,6 @@ const login = require('../../Service/Auth/Login')
 const loginController = async (req, res, _, session) =>
 {
     const { email, password } = req.body
-
     const loginResponse = await login(email, password)
 
     res.status(200).json({
